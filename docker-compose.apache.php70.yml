@@ -1,0 +1,12 @@
+version: '3'
+services:
+  apache70:
+    build:
+        context: ./apache
+        dockerfile: Dockerfile.php70
+    ports:
+      - 8070:80
+    volumes:
+      - ./magento/apache70:/var/www/html
+    networks:
+      - webnet

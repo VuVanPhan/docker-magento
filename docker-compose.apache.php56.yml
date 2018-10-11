@@ -1,0 +1,12 @@
+version: '3'
+services:
+  apache56:
+    build:
+        context: ./apache
+        dockerfile: Dockerfile.php56
+    ports:
+      - 8056:80
+    volumes:
+      - ./magento/apache56:/var/www/html
+    networks:
+      - webnet
