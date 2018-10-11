@@ -4,6 +4,7 @@
 ```
 127.0.0.1   m2.io
 # LAN_IP    m2.io
+Or echo "127.0.0.1 m2.io | tee -a /etc/hosts"
 ```
 
 ## Base Services
@@ -16,8 +17,9 @@ docker-compose up
 
 ## Multiple Services
 ```sh
-bin/init
-docker-compose -f docker-compose.yml \
+1 - bin/init
+2 - up code to folder in magento
+3 - docker-compose -f docker-compose.yml \
     -f docker-compose.apache.php56.yml \
     -f docker-compose.apache.php70.yml \
     -f docker-compose.apache.php71.yml \
