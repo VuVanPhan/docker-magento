@@ -1,0 +1,6 @@
+MYSQL_ROOT=db
+MYSQL_ROOT_PASSWORD=magento
+
+PMA_HOST=db
+PMA_USER=root
+PMA_PASSWORD=magento

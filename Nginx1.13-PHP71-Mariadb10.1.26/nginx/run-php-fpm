@@ -3,5 +3,5 @@
 # Apache ENV
 chmod -R 777 .
 
-# Start apache2
-apache2-foreground
+# Start PHP FPM
+php-fpm

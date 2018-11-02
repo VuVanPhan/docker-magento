@@ -1,62 +1,71 @@
-# docker-magento
+# Install Magento with Nginx
 
-## Config Host
-```
+### Config Host - user vitual host
+```sh
 127.0.0.1   m2.io
-# LAN_IP    m2.io
 Or echo "127.0.0.1 m2.io | tee -a /etc/hosts"
+# LAN_IP    m2.io
+# Example : 192.168.120.45 m2.io
 ```
 
-## Base Services
+## 1 - Install Magento
 ```sh
-docker-compose up
+1 - Open the terminal on the Nginx directory
+2 - Go to the directory "Nginx...-PHP...-Mariadb10.1.26/magento/"
+# Example : $ cd Nginx1.13-PHP71-Mariadb10.1.26/magento/
+3 - Create folder "source" and up code Magento to here
+4 - Return to the directory contain the docker-composer.yml - the directory "Nginx...-PHP...-Mariadb10.1.26"
+# Example : Here, is the directory "Nginx1.13-PHP71-Mariadb10.1.26"
+# $ cd ../
+5 - Run "docker-compose up"
+
+# Note : you can edit port services in the two file :
+# - Nginx...-PHP...-Mariadb10.1.26/docker-composer.yml
+# - Nginx...-PHP...-Mariadb10.1.26/nginx/default.php.conf
+# Example :
+# - Nginx1.13-PHP71-Mariadb10.1.26/docker-composer.yml
+# - Nginx1.13-PHP71-Mariadb10.1.26/nginx/default.php.conf
 ```
 
-- phpMyAdmin: http://m2.io:8080/
-- email: http://m2.io:8025/
-
-## Multiple Services
 ```sh
-1 - bin/init
-2 - up code to folder in magento
-3 - docker-compose -f docker-compose.yml \
-    -f docker-compose.apache.php56.yml \
-    -f docker-compose.apache.php70.yml \
-    -f docker-compose.apache.php71.yml \
-    -f docker-compose.nginx.php56.yml \
-    -f docker-compose.nginx.php70.yml \
-    -f docker-compose.nginx.php71.yml \
-    up
+# Information Service
+- phpMyAdmin : http://m2.io:8080/
+- email      : http://m2.io:8025
 ```
 
-- Apache PHP 5.6: http://m2.io:8056/
-- Apache PHP 7.0: http://m2.io:8070/
-- Apache PHP 7.1: http://m2.io:8071/
+## 2 - Create Database
+```sh
+1 - Go to phpMyAdmin : http://m2.io:8080
+2 - Create database
+# Example : nginx113php71_magentoce226
+```
 
-- Nginx PHP 5.6 - CE 2.1.13: http://m2.io:8560/
-- Nginx PHP 5.6 - EE 2.1.15: http://m2.io:8561/
-- Nginx PHP 7.0 - CE 2.1.13: http://m2.io:8700/
-- Nginx PHP 7.0 - EE 2.1.15: http://m2.io:8701/
-- Nginx PHP 7.1 - CE 2.2.6: http://m2.io:8710/
-- Nginx PHP 7.1 - EE 2.2.6: http://m2.io:8711/
+## 3 - Install Magento
+```sh
+# Access to SSH to run
+# $ docker exec -u www-data -it {container_name} bash
+# $ docker exec -u www-data -it {container_id} bash
+$ docker exec -u www-data -it nginx113-php71-mariadb10126_fpm1371_1 bash
+$ cd source
+# $ ../install_magento DATABASE_NAME URL
+$ ../install_magento nginx113php71_magentoce226 http://m2.io:8710/
+```
+
+```sh
+# Now, you can access the website
+# Frontend URL
+#- Nginx 1.13|1.14 PHP 7.0 : http://m2.io:8700/
+- Nginx 1.13|1.14 PHP 7.1 : http://m2.io:8710/
+
+# Admin URL
+#- Nginx 1.13|1.14 PHP 7.0 : http://m2.io:8700/admin
+- Nginx 1.13|1.14 PHP 7.1 : http://m2.io:8710/admin
+- User/Pass : admin/admin123
+```
 
 ## SSH To Container
 ```sh
-docker exec -u www-data -it {container_name} /bin/bash
-# Example: docker exec -u www-data -it docker-magento_apache70_1 /bin/bash
-# Example: docker exec -u www-data -it docker-magento_fpm70_1 /bin/bash
+# $ docker exec -u www-data -it {container_name} bash
+# $ docker exec -u www-data -it {container_id} bash
+$ docker exec -u www-data -it nginx113-php71-mariadb10126_fpm1371_1 /bash
 ```
-
-## Install Magento
-```sh
-# Access to SSH to run
-# docker exec -u www-data -it docker-magento_apache56_1 /bin/bash
-# docker exec -u www-data -it docker-magento_fpm56_1 /bin/bash
-cd Magento-CE-2.1.13
-../install_magento DATABASE_NAME URL
-# ../install_magento apache56_magentoce2113 "http://m2.io:8056/$(basename $PWD)/"
-# ../install_magento nginx56_magentoce2113 http://m2.io:8560/
-```
-
-- Admin URL: http://m2.io:8056/Magento-CE-2.1.13/admin
-- User/Pass: admin/admin123

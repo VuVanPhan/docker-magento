@@ -1,4 +1,4 @@
-FROM php:7.0-apache
+FROM php:7.0-fpm
 
 # php extensions to run Magento
 RUN apt-get update && apt-get install -y \
@@ -17,10 +17,6 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Enable apache modes
-RUN a2enmod rewrite
-RUN a2enmod headers
-
 # Mailhog
 RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.8.3.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf -
 ENV PATH /usr/local/go/bin:$PATH
@@ -30,6 +26,6 @@ RUN echo 'sendmail_path = /usr/bin/mhsendmail --smtp-addr mailhog:1025' > /usr/l
 RUN echo 'memory_limit = -1' >> /usr/local/etc/php/php.ini
 
 # Run apache server script
-COPY run-apache /usr/local/bin/
-RUN chmod +x /usr/local/bin/run-apache
-CMD ["run-apache"]
+COPY run-php-fpm /usr/local/bin/
+RUN chmod +x /usr/local/bin/run-php-fpm
+CMD ["run-php-fpm"]
