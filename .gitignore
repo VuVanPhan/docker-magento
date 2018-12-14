@@ -2,4 +2,4 @@
 data
 magento*
 .git
-#.gitignore
+.gitignore
