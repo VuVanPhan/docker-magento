@@ -55,7 +55,7 @@ containermysql=$(echo "${instance//.}" | tr '[:upper:]' '[:lower:]')"_db_1"
 
 # create databases
 docker exec -u www-data -it $containermysql sh
-mysql -u root -p
+echo "mysql -u root -p"
 
 create database magento;
 create user magento identified by 'magento123@#';
