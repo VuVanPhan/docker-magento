@@ -1,0 +1,48 @@
+version: '3'
+services:
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 8025:8025
+    networks:
+      - webnet
+
+  fpm11470:
+    build:
+        context: ./nginx
+        dockerfile: Dockerfile
+    volumes:
+      - ./magento:/var/www/html
+    networks:
+      - webnet
+
+  nginx11470:
+    image: nginx:1.14
+    ports:
+      - 8700:80
+    volumes:
+      - ./magento:/var/www/html
+      - ./nginx/default.php.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - webnet
+
+  db:
+    image: mariadb:10.1.26
+    volumes:
+      - ./data:/var/html/mariadb 
+    env_file:
+      - env
+    networks:
+      - webnet
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8080:80
+    env_file:
+      - env
+    networks:
+      - webnet
+
+networks:
+  webnet:
