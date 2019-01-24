@@ -12,11 +12,11 @@ if [ -z "$2" ]; then
 fi
 
 # Create Database
-echo "<?php \
-    \$conn = new PDO('mysql:host=db', 'root', 'magento'); \
-    \$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); \
-    \$conn->exec('CREATE DATABASE IF NOT EXISTS $1'); \
-    " | php
+#echo "<?php \
+#    \$conn = new PDO('mysql:host=db', 'root', 'magento'); \
+#    \$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); \
+#    \$conn->exec('CREATE DATABASE IF NOT EXISTS $1'); \
+#    " | php
 
 # Install magento
 php source/bin/magento setup:install --use-rewrites=1 \

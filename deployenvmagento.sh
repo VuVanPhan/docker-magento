@@ -21,7 +21,8 @@ instance="Nginx"${nginxversion}"-PHP"${phpversion}"-Mariadb"${mariadbversion}
 source ./$instance/env
 
 # create source magento 2
-rm -rf $PWD"/"$instance"/magento/source" "data"
+echo "Delete "$PWD"/"$instance"/magento/source" $PWD"/"$instance"/data"
+rm -rf $PWD"/"$instance"/magento/source" $PWD"/"$instance"/data"
 mkdir -p $PWD"/"$instance"/magento/source"
 cd $PWD"/"$instance"/magento/source"
 chmod -R 777 ./
@@ -54,22 +55,18 @@ containerphpfpm=$(echo "${instance//.}" | tr '[:upper:]' '[:lower:]')"_fpm"$(ech
 containermysql=$(echo "${instance//.}" | tr '[:upper:]' '[:lower:]')"_db_1"
 
 # create databases
-docker exec -u www-data -it $containermysql sh -c "echo 'create database '$PMA_DB';' | mysql -u'$PMA_USER' -p'$PMA_PASSWORD'"
+# until container mysql status do not == healthy then sleep
+until [ $(docker inspect -f '{{.State.Health.Status}}' "$containermysql") == "healthy" ]; do
+    sleep 1;
+done
+
+# when the DB
+docker exec -u www-data -it $containermysql sh -c "echo 'create database "$PMA_DB";' | mysql -u"$PMA_USER" -p"$PMA_PASSWORD"";
+echo "Database "$PMA_DB" is created on DB "$containermysql"";
 
 # install magento site with command line
-docker exec -u www-data -it $containerphpfpm /var/www/html/install_magento $PMA_DB http://192.168.120.75:8710/
-#docker exec -u www-data -it $containerphpfpm php source/bin/magento setup:install --use-rewrites=1 \
-#    --db-host=db \
-#    --db-name=$PMA_DB \
-#    --db-user=root \
-#    --db-password=magento \
-#    --db-prefix=m_ \
-#    --admin-firstname=Admin \
-#    --admin-lastname=Admin \
-#    --admin-email=admin@m2.io \
-#    --admin-user=admin \
-#    --admin-password=admin123 \
-#    --base-url=http://192.168.120.75:8710/ \
-#    --backend-frontname=admin \
-#    --admin-use-security-key=0 \
-#    --key=8f1e9249ca82c072122ae8d08bc0b0cf magento http://192.168.120.75:8710/
+if [ $(docker inspect -f '{{.State.Running}}' "$containerphpfpm") == "true" ]; then
+        docker exec -u www-data -it $containerphpfpm /var/www/html/install_magento $PMA_DB http://192.168.120.75:8710/
+    else
+        echo "Container '$containerphpfpm' is not running, you are need start service now"
+fi
