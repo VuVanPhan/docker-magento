@@ -66,7 +66,7 @@ echo "Database "$PMA_DB" is created on DB "$containermysql"";
 
 # install magento site with command line
 if [ $(docker inspect -f '{{.State.Running}}' "$containerphpfpm") == "true" ]; then
-        docker exec -u www-data -it $containerphpfpm /var/www/html/install_magento $PMA_DB http://192.168.120.75:8710/
+        docker exec -u www-data -it $containerphpfpm /var/www/html/install_magento $PMA_DB http://192.168.31.114:8710/
     else
         echo "Container '$containerphpfpm' is not running, you are need start service now"
 fi
