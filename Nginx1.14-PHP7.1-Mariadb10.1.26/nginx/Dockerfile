@@ -1,4 +1,5 @@
-FROM php:7.1-fpm
+FROM php:7.1.25-fpm-alpine
+#FROM vuvanphan/phpfpm:7.1.25
 
 # php extensions to run Magento
 RUN apt-get update && apt-get install -y \
