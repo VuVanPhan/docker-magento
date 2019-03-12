@@ -8,9 +8,10 @@ services:
       - webnet
 
   fpm11471:
-    build:
-        context: ./nginx
-        dockerfile: Dockerfile
+#    build:
+#        context: ./nginx
+#        dockerfile: Dockerfile
+    image: vuvanphan/nginx-phpfpm:7.1.25-fpm-jessie-mailhog
     volumes:
       - ./magento:/var/www/html
     networks:

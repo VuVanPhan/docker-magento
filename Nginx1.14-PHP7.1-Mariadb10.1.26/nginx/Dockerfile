@@ -1,5 +1,18 @@
-FROM php:7.1.25-fpm-alpine
+# pass 338MB
+#FROM php:7.1-fpm
+
+## pass 131MB
+#FROM php:7.1.25-fpm
+# build 378MB
+#FROM php:7.1.25-fpm-jessie
+# build 358MB
+#FROM php:7.1.25-fpm-stretch
+
+# not pass 31MB
+#FROM php:7.1.25-fpm-alpineeth
+#FROM php:7.1.25-fpm-alpine3.8
 #FROM vuvanphan/phpfpm:7.1.25
+FROM vuvanphan/phpfpm:7.1.25-fpm-jessie
 
 # php extensions to run Magento
 RUN apt-get update && apt-get install -y \

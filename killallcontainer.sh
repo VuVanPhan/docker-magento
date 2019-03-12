@@ -3,10 +3,10 @@
 docker stop $(docker ps -aq)
 
 # remove all container
-docker rm $(docker ps -aq)
+docker rm -f $(docker ps -aq)
 
 # remove all images
-docker rmi $(docker images -aq)
+docker rmi -f $(docker images -aq)
 
 echo "All containers and images are successfully deleted"
 
